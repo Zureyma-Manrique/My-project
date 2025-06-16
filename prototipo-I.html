@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refugio Modular Flotante - Prototipo</title>
+    <title>Refugio Modular Flotante - Prototipo II</title>
     <style>
         body {
             margin: 0;
@@ -14,9 +14,9 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -26,21 +26,30 @@
             text-align: center;
             color: #2C5530;
             margin-bottom: 30px;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: bold;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-style: italic;
         }
         
         .prototype-container {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 600px;
             background: linear-gradient(180deg, #87CEEB 60%, #4682B4 100%);
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
             margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         
-        /* Agua y ondas */
+        /* Agua y ondas mejoradas */
         .water {
             position: absolute;
             bottom: 0;
@@ -74,271 +83,415 @@
             50% { transform: translateX(10%) scaleY(0.8); }
         }
         
-        /* Estructura principal del refugio */
-        .refugio {
+        /* Módulo principal expandido */
+        .refugio-modular {
             position: absolute;
             left: 50%;
-            top: 40%;
+            top: 35%;
             transform: translateX(-50%);
-            width: 300px;
-            height: 180px;
+            width: 500px;
+            height: 220px;
         }
         
-        /* Base flotante */
+        /* Módulo principal */
+        .modulo-principal {
+            position: absolute;
+            left: 0;
+            bottom: 20px;
+            width: 240px;
+            height: 140px;
+            background: linear-gradient(135deg, #F5F5DC 0%, #E6E6FA 100%);
+            border-radius: 12px;
+            border: 3px solid #8B4513;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+        }
+        
+        /* Módulo conectado */
+        .modulo-conectado {
+            position: absolute;
+            right: 0;
+            bottom: 20px;
+            width: 240px;
+            height: 140px;
+            background: linear-gradient(135deg, #F0F8FF 0%, #E0E6FF 100%);
+            border-radius: 12px;
+            border: 3px solid #8B4513;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+        }
+        
+        /* Conexión entre módulos */
+        .conexion-modular {
+            position: absolute;
+            left: 235px;
+            bottom: 65px;
+            width: 30px;
+            height: 50px;
+            background: linear-gradient(135deg, #D3D3D3 0%, #A9A9A9 100%);
+            border-radius: 5px;
+            border: 2px solid #696969;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .conexion-modular::before {
+            content: '⚡';
+            color: #FFD700;
+            font-size: 16px;
+        }
+        
+        /* Base flotante expandida */
         .base-flotante {
             position: absolute;
             bottom: -20px;
-            left: -10px;
-            width: 320px;
-            height: 40px;
+            left: -20px;
+            width: 540px;
+            height: 45px;
             background: linear-gradient(135deg, #0066CC 0%, #0052A3 100%);
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
         
         .base-flotante::before {
             content: '';
             position: absolute;
-            top: 5px;
-            left: 20px;
-            right: 20px;
-            height: 10px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 5px;
+            top: 8px;
+            left: 30px;
+            right: 30px;
+            height: 12px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 6px;
         }
         
-        /* Estructura principal */
-        .estructura {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 260px;
-            height: 120px;
-            background: linear-gradient(135deg, #F5F5DC 0%, #E6E6FA 100%);
-            border-radius: 8px;
-            border: 3px solid #8B4513;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        /* Techo con paneles solares */
+        /* Techo con paneles solares mejorados */
         .techo {
             position: absolute;
-            top: -15px;
-            left: -5px;
-            width: 270px;
-            height: 30px;
+            top: -18px;
+            left: -8px;
+            width: 256px;
+            height: 35px;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border-radius: 15px;
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.2);
+            border-radius: 18px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.25);
+        }
+        
+        .techo-conectado {
+            position: absolute;
+            top: -18px;
+            left: -8px;
+            width: 256px;
+            height: 35px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 18px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.25);
         }
         
         .panel-solar {
             position: absolute;
-            top: 2px;
-            left: 10px;
-            width: 60px;
-            height: 26px;
+            top: 3px;
+            width: 50px;
+            height: 29px;
             background: linear-gradient(135deg, #000080 0%, #4169E1 100%);
-            border-radius: 3px;
+            border-radius: 4px;
             border: 1px solid #000040;
         }
         
-        .panel-solar:nth-child(2) {
-            left: 80px;
-        }
+        .panel-1 { left: 15px; }
+        .panel-2 { left: 75px; }
+        .panel-3 { left: 135px; }
+        .panel-4 { left: 195px; }
         
-        .panel-solar:nth-child(3) {
-            left: 150px;
-        }
-        
-        .panel-solar:nth-child(4) {
-            left: 200px;
-        }
-        
-        /* Ventanas */
+        /* Ventanas mejoradas */
         .ventana {
             position: absolute;
-            width: 40px;
-            height: 50px;
+            width: 45px;
+            height: 55px;
             background: linear-gradient(135deg, #87CEEB 0%, #B0E0E6 100%);
-            border: 2px solid #4682B4;
-            border-radius: 5px;
+            border: 3px solid #4682B4;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        .ventana-1 {
-            top: 20px;
-            left: 30px;
-        }
+        .ventana-1 { top: 25px; left: 25px; }
+        .ventana-2 { top: 25px; right: 25px; }
+        .ventana-3 { top: 25px; left: 25px; }
+        .ventana-4 { top: 25px; right: 25px; }
         
-        .ventana-2 {
-            top: 20px;
-            right: 30px;
-        }
-        
-        /* Puerta */
+        /* Puertas */
         .puerta {
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 50px;
-            height: 80px;
+            width: 55px;
+            height: 90px;
             background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
-            border-radius: 5px 5px 0 0;
-            border: 2px solid #654321;
+            border-radius: 8px 8px 0 0;
+            border: 3px solid #654321;
         }
         
         .puerta::before {
             content: '';
             position: absolute;
-            top: 40px;
-            right: 5px;
-            width: 5px;
-            height: 5px;
+            top: 45px;
+            right: 8px;
+            width: 6px;
+            height: 6px;
             background: #FFD700;
             border-radius: 50%;
         }
         
-        /* Sistema de anclaje */
+        /* Cocina exterior */
+        .cocina-exterior {
+            position: absolute;
+            right: -60px;
+            bottom: 20px;
+            width: 50px;
+            height: 80px;
+            background: linear-gradient(135deg, #F4A460 0%, #DEB887 100%);
+            border-radius: 8px;
+            border: 2px solid #8B7355;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .cocina-exterior::before {
+            content: '🔥';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+        }
+        
+        /* Rampa de accesibilidad */
+        .rampa {
+            position: absolute;
+            bottom: -10px;
+            left: 80px;
+            width: 80px;
+            height: 15px;
+            background: linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%);
+            border-radius: 0 8px 8px 0;
+            transform: rotate(-10deg);
+            border: 2px solid #808080;
+        }
+        
+        /* Sistema de anclaje mejorado */
         .anclaje {
             position: absolute;
-            width: 8px;
-            height: 60px;
-            background: #696969;
-            border-radius: 4px;
+            width: 10px;
+            height: 70px;
+            background: linear-gradient(135deg, #696969 0%, #2F4F4F 100%);
+            border-radius: 5px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3);
         }
         
         .anclaje-1 {
-            bottom: -40px;
-            left: 0;
-            transform: rotate(15deg);
+            bottom: -50px;
+            left: 50px;
+            transform: rotate(20deg);
         }
         
         .anclaje-2 {
-            bottom: -40px;
-            right: 0;
-            transform: rotate(-15deg);
+            bottom: -50px;
+            right: 50px;
+            transform: rotate(-20deg);
         }
         
-        /* Tanque de agua */
+        /* Tanque de agua mejorado */
         .tanque-agua {
             position: absolute;
-            right: -30px;
-            top: 30px;
-            width: 25px;
-            height: 60px;
+            left: -35px;
+            top: 35px;
+            width: 30px;
+            height: 70px;
             background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
-            border-radius: 12px;
-            border: 2px solid #2F4F4F;
+            border-radius: 15px;
+            border: 3px solid #2F4F4F;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         
         .tanque-agua::before {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 2px;
-            right: 2px;
-            height: 40px;
-            background: rgba(135, 206, 235, 0.6);
-            border-radius: 8px;
+            top: 12px;
+            left: 3px;
+            right: 3px;
+            height: 46px;
+            background: rgba(135, 206, 235, 0.7);
+            border-radius: 10px;
         }
         
-        /* Antena de comunicación */
-        .antena {
+        /* Antena GPS/Radio mejorada */
+        .antena-gps {
             position: absolute;
-            top: -35px;
-            right: 50px;
-            width: 2px;
-            height: 25px;
+            top: -45px;
+            right: 60px;
+            width: 3px;
+            height: 30px;
             background: #696969;
         }
         
-        .antena::before {
+        .antena-gps::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -3px;
-            width: 8px;
-            height: 8px;
+            top: -5px;
+            left: -5px;
+            width: 13px;
+            height: 13px;
             background: #FF4500;
             border-radius: 50%;
+            box-shadow: 0 0 10px #FF4500;
         }
         
-        /* Iluminación LED */
+        /* Iluminación LED mejorada */
         .led {
             position: absolute;
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #FFFF00;
             border-radius: 50%;
-            box-shadow: 0 0 15px #FFFF00;
+            box-shadow: 0 0 20px #FFFF00;
             animation: blink 2s ease-in-out infinite;
         }
         
-        .led-1 {
-            top: 10px;
-            left: 10px;
-        }
-        
-        .led-2 {
-            top: 10px;
-            right: 10px;
-        }
+        .led-1 { top: 12px; left: 12px; }
+        .led-2 { top: 12px; right: 12px; }
+        .led-3 { top: 12px; left: 12px; }
+        .led-4 { top: 12px; right: 12px; }
         
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
         
-        /* Información técnica */
+        /* Especificaciones mejoradas */
+        .specs-title {
+            text-align: center;
+            font-size: 22px;
+            color: #2C5530;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
         .specs {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
         
         .spec-item {
-            background: rgba(240, 248, 255, 0.8);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #2C5530;
+            background: rgba(240, 248, 255, 0.9);
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 5px solid #2C5530;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .spec-item:hover {
+            transform: translateY(-3px);
         }
         
         .spec-title {
             font-weight: bold;
             color: #2C5530;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-size: 16px;
         }
         
         .spec-value {
             color: #555;
             font-size: 14px;
+            line-height: 1.4;
         }
         
-        /* Leyenda */
+        .spec-improved {
+            background: rgba(144, 238, 144, 0.3);
+            border-left-color: #228B22;
+        }
+        
+        .improvement-badge {
+            display: inline-block;
+            background: #228B22;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+        
+        /* Comparación de versiones */
+        .comparison {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-title {
+            text-align: center;
+            font-size: 20px;
+            color: #2C5530;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            text-align: center;
+        }
+        
+        .comparison-header {
+            background: #2C5530;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        
+        .comparison-cell {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .version-1 { background: rgba(255, 200, 200, 0.5); }
+        .version-2 { background: rgba(200, 255, 200, 0.5); }
+        
+        /* Leyenda mejorada */
         .legend {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
             justify-content: center;
         }
         
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.9);
-            padding: 8px 12px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            gap: 10px;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .legend-item:hover {
+            transform: scale(1.05);
         }
         
         .legend-color {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.2);
         }
         
         .color-solar { background: #1e3c72; }
@@ -346,11 +499,15 @@
         .color-flotante { background: #0066CC; }
         .color-agua { background: #4682B4; }
         .color-led { background: #FFFF00; }
+        .color-conexion { background: #A9A9A9; }
+        .color-cocina { background: #F4A460; }
+        .color-rampa { background: #C0C0C0; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">REFUGIO MODULAR FLOTANTE - PROTOTIPO VISUAL</h1>
+        <h1 class="title">REFUGIO MODULAR FLOTANTE - PROTOTIPO II</h1>
+        <p class="subtitle">Sistema expandible con instalación rápida y mejoras de accesibilidad</p>
         
         <div class="prototype-container">
             <!-- Agua y ondas -->
@@ -360,32 +517,49 @@
                 <div class="wave"></div>
             </div>
             
-            <!-- Refugio principal -->
-            <div class="refugio">
-                <!-- Base flotante -->
+            <!-- Sistema modular -->
+            <div class="refugio-modular">
+                <!-- Base flotante expandida -->
                 <div class="base-flotante"></div>
                 
-                <!-- Estructura principal -->
-                <div class="estructura">
-                    <!-- Techo con paneles solares -->
+                <!-- Módulo principal -->
+                <div class="modulo-principal">
                     <div class="techo">
-                        <div class="panel-solar"></div>
-                        <div class="panel-solar"></div>
-                        <div class="panel-solar"></div>
-                        <div class="panel-solar"></div>
+                        <div class="panel-solar panel-1"></div>
+                        <div class="panel-solar panel-2"></div>
+                        <div class="panel-solar panel-3"></div>
+                        <div class="panel-solar panel-4"></div>
                     </div>
-                    
-                    <!-- Ventanas -->
                     <div class="ventana ventana-1"></div>
                     <div class="ventana ventana-2"></div>
-                    
-                    <!-- Puerta -->
                     <div class="puerta"></div>
-                    
-                    <!-- LEDs de iluminación -->
                     <div class="led led-1"></div>
                     <div class="led led-2"></div>
                 </div>
+                
+                <!-- Conexión modular -->
+                <div class="conexion-modular"></div>
+                
+                <!-- Módulo conectado -->
+                <div class="modulo-conectado">
+                    <div class="techo-conectado">
+                        <div class="panel-solar panel-1"></div>
+                        <div class="panel-solar panel-2"></div>
+                        <div class="panel-solar panel-3"></div>
+                        <div class="panel-solar panel-4"></div>
+                    </div>
+                    <div class="ventana ventana-3"></div>
+                    <div class="ventana ventana-4"></div>
+                    <div class="puerta"></div>
+                    <div class="led led-3"></div>
+                    <div class="led led-4"></div>
+                </div>
+                
+                <!-- Cocina exterior -->
+                <div class="cocina-exterior"></div>
+                
+                <!-- Rampa de accesibilidad -->
+                <div class="rampa"></div>
                 
                 <!-- Sistema de anclaje -->
                 <div class="anclaje anclaje-1"></div>
@@ -394,36 +568,130 @@
                 <!-- Tanque de agua -->
                 <div class="tanque-agua"></div>
                 
-                <!-- Antena de comunicación -->
-                <div class="antena"></div>
+                <!-- Antena GPS/Radio -->
+                <div class="antena-gps"></div>
+            </div>
+        </div>
+        
+        <!-- Comparación de versiones -->
+        <div class="comparison">
+            <h3 class="comparison-title">📊 Comparación: Prototipo I vs Prototipo II</h3>
+            <div class="comparison-table">
+                <div class="comparison-header">Característica</div>
+                <div class="comparison-header">Prototipo I</div>
+                <div class="comparison-header">Prototipo II</div>
+                
+                <div class="comparison-cell"><strong>Tiempo de instalación</strong></div>
+                <div class="comparison-cell version-1">4-6 horas</div>
+                <div class="comparison-cell version-2">90 minutos</div>
+                
+                <div class="comparison-cell"><strong>Capacidad máxima</strong></div>
+                <div class="comparison-cell version-1">6 personas</div>
+                <div class="comparison-cell version-2">10 personas (conectado)</div>
+                
+                <div class="comparison-cell"><strong>Área habitable</strong></div>
+                <div class="comparison-cell version-1">12 m²</div>
+                <div class="comparison-cell version-2">12-21 m² (expandible)</div>
+                
+                <div class="comparison-cell"><strong>Autonomía energética</strong></div>
+                <div class="comparison-cell version-1">7 días</div>
+                <div class="comparison-cell version-2">10 días</div>
+                
+                <div class="comparison-cell"><strong>Resistencia al viento</strong></div>
+                <div class="comparison-cell version-1">120 km/h</div>
+                <div class="comparison-cell version-2">140 km/h</div>
+                
+                <div class="comparison-cell"><strong>Costo optimizado</strong></div>
+                <div class="comparison-cell version-1">$26,650</div>
+                <div class="comparison-cell version-2">$28,500</div>
             </div>
         </div>
         
         <!-- Especificaciones técnicas -->
+        <h3 class="specs-title">🔧 Especificaciones Técnicas - Prototipo II</h3>
         <div class="specs">
-            <div class="spec-item">
-                <div class="spec-title">📏 Dimensiones</div>
-                <div class="spec-value">3m x 4m x 2.2m<br>Área: 12 m²</div>
+            <div class="spec-item spec-improved">
+                <div class="spec-title">📏 Dimensiones <span class="improvement-badge">EXPANDIBLE</span></div>
+                <div class="spec-value">Módulo individual: 3m x 4m x 2.2m<br>
+                Configuración doble: 3m x 7m x 2.2m<br>
+                Área: 12-21 m²</div>
             </div>
-            <div class="spec-item">
-                <div class="spec-title">⚡ Energía Solar</div>
-                <div class="spec-value">Panel 200W<br>Batería 100Ah</div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">⚡ Sistema Energético <span class="improvement-badge">MEJORADO</span></div>
+                <div class="spec-value">Paneles solares: 400W (doble módulo)<br>
+                Batería: 200Ah<br>
+                Autonomía: 10 días</div>
             </div>
+            
             <div class="spec-item">
                 <div class="spec-title">💧 Sistema de Agua</div>
-                <div class="spec-value">Captación lluvia<br>Capacidad: 500L</div>
+                <div class="spec-value">Captación de lluvia<br>
+                Filtrado integrado<br>
+                Capacidad: 800L (expandido)</div>
             </div>
-            <div class="spec-item">
-                <div class="spec-title">🏊‍♂️ Flotabilidad</div>
-                <div class="spec-value">Base inflable PVC<br>Carga: 800 kg</div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">🏊‍♂️ Flotabilidad <span class="improvement-badge">REFORZADA</span></div>
+                <div class="spec-value">Base inflable PVC reforzado<br>
+                Carga máxima: 1200 kg<br>
+                Resistencia: 140 km/h</div>
             </div>
+            
             <div class="spec-item">
                 <div class="spec-title">⚖️ Peso Total</div>
-                <div class="spec-value">85 kg<br>Transportable</div>
+                <div class="spec-value">Módulo individual: 95 kg<br>
+                Sistema completo: 190 kg<br>
+                Transportable en secciones</div>
             </div>
-            <div class="spec-item">
-                <div class="spec-title">👥 Capacidad</div>
-                <div class="spec-value">4-6 personas<br>Familia promedio</div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">👥 Capacidad <span class="improvement-badge">AMPLIADA</span></div>
+                <div class="spec-value">Módulo simple: 4-6 personas<br>
+                Módulo doble: 8-10 personas<br>
+                Familias extendidas</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">🔧 Instalación <span class="improvement-badge">RÁPIDA</span></div>
+                <div class="spec-value">Sistema plug-and-play<br>
+                Tiempo: 90 minutos<br>
+                Capacitación: 3 horas</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">📡 Comunicación <span class="improvement-badge">NUEVO</span></div>
+                <div class="spec-value">Radio de emergencia<br>
+                GPS integrado<br>
+                Antena de largo alcance</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">♿ Accesibilidad <span class="improvement-badge">NUEVO</span></div>
+                <div class="spec-value">Rampa plegable<br>
+                Espacio para silla de ruedas<br>
+                Puertas anchas</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">🍳 Cocina Exterior <span class="improvement-badge">NUEVO</span></div>
+                <div class="spec-value">Área techada: 2m x 1.5m<br>
+                Ventilación natural<br>
+                Conexión modular</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">💰 Análisis Económico <span class="improvement-badge">OPTIMIZADO</span></div>
+                <div class="spec-value">ROI Social: 4.7:1<br>
+                Ahorro a 5 años: 65%<br>
+                Costo por familia: $1,777</div>
+            </div>
+            
+            <div class="spec-item spec-improved">
+                <div class="spec-title">🛡️ Protección <span class="improvement-badge">MEJORADA</span></div>
+                <div class="spec-value">Mosquiteros integrados<br>
+                Tratamiento anticorrosión<br>  
+                Ventilación regulable</div>
             </div>
         </div>
         
@@ -431,19 +699,31 @@
         <div class="legend">
             <div class="legend-item">
                 <div class="legend-color color-solar"></div>
-                <span>Paneles Solares</span>
+                <span>Paneles Solares Mejorados</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color color-estructura"></div>
-                <span>Estructura Habitable</span>
+                <span>Módulo Principal</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color color-flotante"></div>
-                <span>Base Flotante</span>
+                <span>Base Flotante Expandida</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-conexion"></div>
+                <span>Conexión Modular</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-cocina"></div>
+                <span>Cocina Exterior</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color color-rampa"></div>
+                <span>Rampa de Accesibilidad</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color color-agua"></div>
-                <span>Tanque de Agua</span>
+                <span>Sistema de Agua</span>
             </div>
             <div class="legend-item">
                 <div class="legend-color color-led"></div>
