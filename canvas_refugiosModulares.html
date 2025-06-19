@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo Canvas - Refugios Modulares Flotantes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .author-info {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            min-height: 800px;
+        }
+        
+        .canvas-section {
+            border: 2px solid #e9ecef;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .canvas-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #4facfe;
+        }
+        
+        .canvas-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--section-color);
+        }
+        
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-content {
+            flex: 1;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .section-content li {
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--section-color);
+            transition: background 0.3s ease;
+        }
+        
+        .section-content li:hover {
+            background: #e3f2fd;
+        }
+        
+        .section-content .highlight {
+            font-weight: bold;
+            color: var(--section-color);
+        }
+        
+        /* Colores específicos para cada sección */
+        .socios-clave { --section-color: #ff6b6b; }
+        .actividades-clave { --section-color: #4ecdc4; }
+        .recursos-clave { --section-color: #45b7d1; }
+        .propuesta-valor { --section-color: #96ceb4; }
+        .relacion-clientes { --section-color: #feca57; }
+        .canales { --section-color: #ff9ff3; }
+        .segmentos-clientes { --section-color: #54a0ff; }
+        .estructura-costos { --section-color: #5f27cd; }
+        .fuentes-ingresos { --section-color: #00d2d3; }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--section-color);
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+
+        .references-section {
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            margin-top: 20px; /* Added margin to separate from Canvas grid */
+            border-radius: 0 0 20px 20px; /* Rounded bottom corners */
+        }
+
+        .references-section h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .references-section ul {
+            list-style: decimal; /* Use decimal numbering for APA style if needed */
+            padding-left: 25px; /* Indent for list numbers */
+        }
+
+        .references-section li {
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .references-section a {
+            color: #4facfe;
+            text-decoration: none;
+        }
+
+        .references-section a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 1024px) {
+            .canvas-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: auto;
+            }
+            
+            .canvas-section {
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .canvas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .author-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MODELO CANVAS</h1>
+            <div class="subtitle">Refugios Modulares Flotantes para Desastres Naturales</div>
+        </div>
+        
+        <div class="author-info">
+            <div><strong>Estudiante:</strong> Zureyma Quetzailí Manrique Santiago</div>
+            <div><strong>Fecha:</strong> 18 de junio de 2025</div>
+            <div><strong>Docente:</strong> Omar Zepeda López</div>
+        </div>
+        
+        <div class="canvas-grid">
+            <!-- Fila Superior -->
+            <div class="canvas-section socios-clave">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.5 8H17c-.8 0-1.3.5-1.3 1.3v6.7c0 .8.5 1.3 1.3 1.3h.7v2.7h2z"/></svg>
+                    SOCIOS CLAVE
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">CENAPRED</span> - Certificación y validación técnica</li>
+                        <li><span class="highlight">Protección Civil</span> - Implementación operativa</li>
+                        <li><span class="highlight">Cruz Roja Internacional</span> - Financiamiento y distribución</li>
+                        <li><span class="highlight">Fabricantes nacionales</span> - Producción especializada</li>
+                        <li><span class="highlight">Universidades</span> - I+D y mejora continua</li>
+                        <li><span class="highlight">Gobiernos municipales</span> - Adopción local</li>
+                        <li><span class="highlight">ONG ambientales</span> - Sostenibilidad</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section actividades-clave">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    ACTIVIDADES CLAVE
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Diseño y desarrollo</span> - Mejora continua del prototipo</li>
+                        <li><span class="highlight">Fabricación modular</span> - Producción escalable</li>
+                        <li><span class="highlight">Capacitación técnica</span> - Personal especializado</li>
+                        <li><span class="highlight">Monitoreo y mantenimiento</span> - Operación continua</li>
+                        <li><span class="highlight">Logística de emergencia</span> - Despliegue rápido</li>
+                        <li><span class="highlight">Investigación aplicada</span> - Innovación constante</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section recursos-clave">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    RECURSOS CLAVE
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Propiedad intelectual</span> - Patente del sistema modular</li>
+                        <li><span class="highlight">Equipo técnico</span> - Ingenieros especializados</li>
+                        <li><span class="highlight">Instalaciones de prueba</span> - Laboratorio flotante</li>
+                        <li><span class="highlight">Materiales especializados</span> - Componentes anticorrosión</li>
+                        <li><span class="highlight">Red de técnicos</span> - Personal certificado nacional</li>
+                        <li><span class="highlight">Base de datos</span> - Zonas de riesgo y comunidades</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section propuesta-valor">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    PROPUESTA DE VALOR
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Instalación ultrarrápida</span> - Solo 90 minutos vs 4-6 horas</li>
+                        <li><span class="highlight">Flexibilidad familiar</span> - 6 a 10 personas conectables</li>
+                        <li><span class="highlight">Autonomía total</span> - 10 días sin suministros externos</li>
+                        <li><span class="highlight">Resistencia extrema</span> - Vientos de 140 km/h</li>
+                        <li><span class="highlight">Flotabilidad segura</span> - Protección contra inundaciones</li>
+                        <li><span class="highlight">ROI social 4.7:1</span> - Retorno comprobado de inversión</li>
+                        <li><span class="highlight">Adaptación cultural</span> - Respeto a estructura familiar mexicana</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section relacion-clientes">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.5 8H17c-.5 0-1 .5-1 1v4h-2c-.5 0-1 .5-1 1v6h2v3h4z"/></svg>
+                    RELACIÓN CON CLIENTES
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Asistencia especializada</span> - Soporte técnico 24/7 durante emergencias</li>
+                        <li><span class="highlight">Capacitación continua</span> - Personal de protección civil</li>
+                        <li><span class="highlight">Comunidad de usuarios</span> - Red de técnicos certificados</li>
+                        <li><span class="highlight">Actualización automática</span> - Mejoras del sistema</li>
+                        <li><span class="highlight">Feedback directo</span> - Mejora basada en experiencias reales</li>
+                        <li><span class="highlight">Acompañamiento integral</span> - Desde implementación hasta operación</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Fila Inferior -->
+            <div class="canvas-section estructura-costos">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    ESTRUCTURA DE COSTOS
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Costos fijos (40%)</span>
+                            <br>• I+D y desarrollo: $8,500
+                            <br>• Personal especializado: $6,000
+                            <br>• Instalaciones y equipo: $4,000</li>
+                        <li><span class="highlight">Costos variables (60%)</span>
+                            <br>• Materiales por módulo: $15,200
+                            <br>• Fabricación: $5,800
+                            <br>• Logística: $2,500</li>
+                        <li><span class="highlight">Costo total por módulo: $28,500</span></li>
+                        <li><span class="highlight">Mantenimiento anual: $1,200</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section canales">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 2.5l-3 3-3-3V5h6v1.5zM4 18V8l8 5 8-5v10H4z"/></svg>
+                    CANALES
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Canal institucional</span>
+                            <br>• CENAPRED y Protección Civil
+                            <br>• Licitaciones gubernamentales</li>
+                        <li><span class="highlight">Canal directo</span>
+                            <br>• Municipios y estados
+                            <br>• Presentaciones ejecutivas</li>
+                        <li><span class="highlight">Canal internacional</span>
+                            <br>• Cruz Roja y ONU
+                            <br>• Organismos multilaterales</li>
+                        <li><span class="highlight">Canal académico</span>
+                            <br>• Universidades e investigación
+                            <br>• Congresos especializados</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section segmentos-clientes">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.5 8H17c-.5 0-1 .5-1 1v4h-2c-.5 0-1 .5-1 1v6h2v3h4zM12.5 11.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zm1.5 1h-3c-.8 0-1.5.7-1.5 1.5v6h2v7h2v-7h2v-6c0-.8-.7-1.5-1.5-1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zM7.5 22v-7H9v-6c0-.8-.7-1.5-1.5-1.5h-3C3.7 7.5 3 8.2 3 9v6h1.5v7h3z"/></svg>
+                    SEGMENTOS DE CLIENTES
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Primario: Gobiernos estatales</span>
+                            <br>• Secretarías de Protección Civil
+                            <br>• 32 estados con riesgo de desastres</li>
+                        <li><span class="highlight">Secundario: Municipios costeros</span>
+                            <br>• 150+ municipios de alto riesgo
+                            <br>• Presupuesto de prevención</li>
+                        <li><span class="highlight">Terciario: ONG internacionales</span>
+                            <br>• Cruz Roja, UNICEF, ONU
+                            <br>• Fondos de emergencia</li>
+                        <li><span class="highlight">Nicho: Empresas privadas</span>
+                            <br>• Responsabilidad social corporativa
+                            <br>• Zonas industriales costeras</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="canvas-section fuentes-ingresos">
+                <div class="section-title">
+                    <svg class="icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    FUENTES DE INGRESOS
+                </div>
+                <div class="section-content">
+                    <ul>
+                        <li><span class="highlight">Venta directa (70%)</span>
+                            <br>• $28,500 por módulo
+                            <br>• Contratos gubernamentales plurianuales</li>
+                        <li><span class="highlight">Servicios de mantenimiento (20%)</span>
+                            <br>• $1,200 anuales por módulo
+                            <br>• Contratos de servicio a 10 años</li>
+                        <li><span class="highlight">Capacitación y consultoría (7%)</span>
+                            <br>• $15,000 por programa de capacitación
+                            <br>• Asesoría en implementación</li>
+                        <li><span class="highlight">Licenciamiento internacional (3%)</span>
+                            <br>• Regalías por uso de tecnología
+                            <br>• Expansión a Centroamérica</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="references-section">
+            <h2>REFERENCIAS</h2>
+            <ul>
+                <li>Centro Nacional de Prevención de Desastres (CENAPRED). (n.d.). <cite>Guía Básica para la Elaboración de Atlas Estatales y Municipales de Peligros y Riesgos</cite>. Gobierno de México. <a href="https://www.cenapred.unam.mx/es/Publicaciones/archivos/57.pdf" target="_blank">https://www.cenapred.unam.mx/es/Publicaciones/archivos/57.pdf</a></li>
+                <li>Gobierno del Estado de Veracruz. (2024). <cite>Refugios temporales</cite> [Manual]. Protección Civil Veracruz. <a href="https://www.veracruz.gob.mx/proteccioncivil/wp-content/uploads/sites/5/2024/03/Refugios_28_Marzo.pdf" target="_blank">https://www.veracruz.gob.mx/proteccioncivil/wp-content/uploads/sites/5/2024/03/Refugios_28_Marzo.pdf</a></li>
+                <li>Comisión Nacional del Agua (CONAGUA). (2009). <cite>Manual de agua potable, alcantarillado y saneamiento</cite>. <a href="https://www.conagua.gob.mx/CONAGUA07/Publicaciones/Publicaciones/Libros/01AlcantarilladoPluvial.pdf" target="_blank">https://www.conagua.gob.mx/CONAGUA07/Publicaciones/Publicaciones/Libros/01AlcantarilladoPluvial.pdf</a></li>
+                <li>Comisión Nacional para el Uso Eficiente de la Energía (CONUEE). (2017). <cite>Introducción a la eficiencia energética y sistemas de gestión de la energía</cite>. <a href="https://www.conuee.gob.mx/transparencia/boletines/documentos/estudios/Documento_Memoria_del_Proyecto_Piloto.pdf" target="_blank">https://www.conuee.gob.mx/transparencia/boletines/documentos/estudios/Documento_Memoria_del_Proyecto_Piloto.pdf</a></li>
+                <li>Gobierno de Tamaulipas. (2023). <cite>Guía operativa para refugios temporales</cite>. Secretaría de Protección Civil. <a href="https://www.tamaulipas.gob.mx/proteccioncivil/wp-content/uploads/sites/36/2024/06/guia-refugios-temporales.-2023.pdf" target="_blank">https://www.tamaulipas.gob.mx/proteccioncivil/wp-content/uploads/sites/36/2024/06/guia-refugios-temporales.-2023.pdf</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Proyecto:</strong> Refugios Modulares Flotantes para Desastres Naturales | <strong>Versión:</strong> Prototipo II | <strong>Universidad del Valle de México</strong></p>
+        </div>
+    </div>
+</body>
+</html>
